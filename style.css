@@ -1,0 +1,103 @@
+/* Menu accueil */
+body {
+    height: 100vh;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    font-family: "Source Sans 3", sans-serif;
+    font-style: regular;
+}
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url(./assets/images/mc_landing_banner.png);
+    background-size: auto;
+    background-position: bottom;
+    height: 100%;
+    width: 100%;
+    filter: opacity(0.9);
+}
+h1 {
+    font-size: 2.3rem;
+    margin-bottom: 2.5rem;
+    text-align: left;
+}
+span {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    display: block;
+    text-align: left;
+}
+h2 {
+    margin-top: -1px;
+}
+.card {
+    position: relative;
+    top: 2rem;
+    left: -5rem;
+    height: 410px;
+    width: 550px;
+    background-color: white;
+    padding: 0 25px 25px 25px;
+    border-radius: 15px;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.354);
+}
+.container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    gap: 45px;
+}
+.choice-card {
+    height: 90px;
+    width: 300px;
+    border: 6px solid #ffc837;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px 0;
+    margin-top: 3rem;
+}
+.choice-card img {
+    height: 90%;
+    margin-top: 20px;
+}
+@media (max-width : 990px) {
+    .card {
+        height: auto;
+        width: 500px;
+        top: 0;
+        left: 0;
+    }
+    h1 {
+        font-size: 2rem;
+        text-align: center
+    }
+    span {
+        text-align: center;
+    }
+}
+@media (max-width : 767px) {
+    .container {
+        gap: 0;
+        flex-direction: column;
+    }
+    .card {
+        width: 250px;
+    }
+    h2 {
+        font-size: 1.1rem;
+    }
+    span {
+        font-size: 1rem;
+    }
+    .choice-card {
+        width: 150px;
+        padding: 20px;
+    }
+}
