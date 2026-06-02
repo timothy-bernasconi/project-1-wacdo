@@ -101,3 +101,38 @@ h2 {
         padding: 20px;
     }
 }
+
+/* Categories */
+
+#cat-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.cat-card {
+    height: 50px;
+    width: 50px;           
+    border: 1px solid #000;
+    border-radius: 15px;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+}
+
+.cat-card img {
+    height: 65px;         
+    width: auto;
+    object-fit: cover;     
+    margin-top: 20px;
+}
+
+.cat-card h2 {
+    font-size: 1.1rem;
+    font-weight: 400;
+}
