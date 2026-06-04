@@ -6,6 +6,7 @@ const btn2 = document.getElementById("btn-click-2");
 const btnGauche = document.getElementById("btn-prev");
 const btnDroite = document.getElementById("btn-next");
 const menuContainer = document.getElementById("menu-container");
+const menuCarte = document.getElementById("menu-detail");
 
 
 let categories = [];
@@ -108,3 +109,37 @@ catCards.addEventListener("click", async (e) => {
         menuContainer.innerHTML = "<p>Une erreur est survenue lors du chargement des menus.</p>";
     }
 });
+
+menuContainer.addEventListener("click", (e) => {
+    const card = e.target.closest(".produit-card");
+    if(!card) return;
+
+    const titreMenu = card.querySelector("h2").textContent;
+
+    const detail = document.createElement("div");
+    
+         detail.classList.add("menu-detail");
+        detail.innerHTML = `
+    <div class="menu-detail-content">
+        <img src ="/assets/images/supprimer.png" class ="close-btn">
+        <h2>Une grosse faim ? </h2>
+        <p> Le menu maxi Best Of comprend un sandwich, une grande frite et une boisson 50 Cl </p>
+        <div class ="menu-detail-image">
+        <img src ="/assets/images/illustration-best-of.png" class ="btn-xl">
+        <img src ="/assets/images/illustration-maxi-best-of.png" class ="btn-xxl">
+        </div>
+        <button> Etape suivante </button>
+    </div>`;
+document.body.appendChild(detail); 
+
+    document.getElementById("btn-xl").addEventListener("click", () => {
+        console.log("XL choisi pour", titreMenu);
+        
+    });
+
+    document.getElementById("btn-xxl").addEventListener("click", () => {
+        console.log("XXL choisi pour", titreMenu);
+        
+    });
+});
+
