@@ -10,6 +10,7 @@ const menuCarte = document.getElementById("menu-detail");
 
 
 let categories = [];
+let categorieActive = "";
 let index = 0;
 
 async function chargerCategories() {
@@ -70,7 +71,7 @@ catCards.addEventListener("click", async (e) => {
     e.stopPropagation();
 
     const titreMenu = card.querySelector("h2").textContent;
-
+    categorieActive = titreMenu;
     try {
         const responseProduits = await fetch("produits.json"); 
         if (!responseProduits.ok) throw new Error("Erreur lors du chargement du JSON");
@@ -114,32 +115,139 @@ menuContainer.addEventListener("click", (e) => {
     const card = e.target.closest(".produit-card");
     if(!card) return;
 
-    const titreMenu = card.querySelector("h2").textContent;
+    const nomProduit = card.querySelector("h2").textContent;
 
     const detail = document.createElement("div");
-    
-         detail.classList.add("menu-detail");
+    detail.classList.add("menu-detail");
+   
+    if(categorieActive === "menus") {
         detail.innerHTML = `
-    <div class="menu-detail-content">
-        <img src ="/assets/images/supprimer.png" class ="close-btn">
-        <h2>Une grosse faim ? </h2>
-        <p> Le menu maxi Best Of comprend un sandwich, une grande frite et une boisson 50 Cl </p>
-        <div class ="menu-detail-image">
-        <img src ="/assets/images/illustration-best-of.png" class ="btn-xl">
-        <img src ="/assets/images/illustration-maxi-best-of.png" class ="btn-xxl">
-        </div>
-        <button> Etape suivante </button>
-    </div>`;
-document.body.appendChild(detail); 
+        <div class="menu-detail-content">
+            <img src="/assets/images/supprimer.png" class="close-btn">
+            <h2>Une grosse faim ?</h2>
+            <p>Le menu maxi Best Of comprend un sandwich, une grande frite et une boisson 50 Cl</p>
+            <div class="menu-detail-image">
+                <img src="/assets/images/illustration-best-of.png" class="btn-xl">
+                <img src="/assets/images/illustration-maxi-best-of.png" class="btn-xxl">
+            </div>
+            <button>Étape suivante</button>
+        </div>`;
 
-    document.getElementById("btn-xl").addEventListener("click", () => {
-        console.log("XL choisi pour", titreMenu);
-        
+    } else if (categorieActive === "boissons") {
+
+        let imageBoisson = "";
+
+
+        if (nomProduit === "Coca Cola") {
+            imageBoisson = "/assets/boissons/coca-cola.png"; 
+            
+        } else if (nomProduit === "Coca Sans Sucres") {
+            imageBoisson = "/assets/boissons/coca-sans-sucres.png";
+        } else if (nomProduit === "Eau") {
+            imageBoisson = "/assets/boissons/eau.png"
+        } else if (nomProduit === "Fanta Orange") {
+            imageBoisson = "/assets/boissons/fanta.png"
+        } else if (nomProduit === "Ice Tea Pêche") {
+            imageBoisson = "/assets/boissons/ice-tea-peche.png"
+        } else if (nomProduit === "Ice Tea Citron") {
+            imageBoisson = "/assets/the-vert-citron-sans-sucres.png"
+        } else if (nomProduit === "Jus d'Orange") {
+            imageBoisson = "/assets/boissons/jus-orange.png"
+        } else {
+            imageBoisson = "/assets/boissons/jus-pomme-bio.png"
+        }
+    
+
+        detail.innerHTML = `
+        <div class="menu-detail-content">
+            <img src="/assets/images/supprimer.png" class="close-btn">
+            <h2>Une petite soif ?</h2>
+            <p>Choisissez la taille de votre boisson pour votre ${nomProduit}, +0.50€ pour le format 50 Cl</p>
+            <div class="menu-detail-image">
+                <div class="menu-card">
+                    <img src="${imageBoisson}" class="small-drink">
+                    <h2>30Cl</h2>
+                </div>
+                <div class="menu-card">
+                    <img src="${imageBoisson}">
+                    <h2>50Cl</h2>
+                </div>
+            </div>
+            <div class="compteur">
+                <button id="moins">-</button>
+                <span id="quantite">1</span>
+                <button id="plus">+</button>
+            </div>
+            <button>Étape suivante</button>
+        </div>`;
+
+    } else if (categorieActive === "burgers") {
+
+        let imageBurger = "";
+
+
+        if (nomProduit === "Le 280") {
+            imageBurger = "/assets/burgers/280.png";
+        } else if (nomProduit === "Big Tasty") {
+            imageBurger = "/assets/burgers/BIG_TASTY_1_VIANDE.png";
+        } else if (nomProduit === "Big Tasty Bacon") {
+            imageBurger = "/assets/burgers/BIG_TASTY_BACON_1_VIANDE.png"
+        } else if (nomProduit === "Big Mac") {
+            imageBurger = "/assets/burgers/BIGMAC.png"
+        } else if (nomProduit === "CBO") {
+            imageBurger = "/assets/burgers/CBO.png"
+        } else if (nomProduit === "MC Chicken") {
+            imageBurger = "/assets/burgers/MCCHICKEN.png"
+        } else if (nomProduit === "MC Crispy") {
+            imageBurger = "/assets/burgers/MCCRISPY.png"
+        } else if (nomProduit === "MC Fish") {
+            imageBurger = "/assets/burgers/MCFISH.png"
+        } else if (nomProduit === "Royal Bacon") {
+            imageBurger = "/assets/burgers/ROYALBACON.png"
+        } else if (nomProduit === "Royal Cheese") {
+            imageBurger = "/assets/burgers/ROYALCHEESE.png"
+        } else if (nomProduit === "Royal Deluxe") {
+            imageBurger = "/assets/burgers/ROYALDELUXE.png"
+        } else if (nomProduit === "Signature BBQ Beef 2 viandes") {
+            imageBurger = "/assets/burgers/SIGNATURE_BBQ_BEEF_(2_VIANDES).png"
+        } else {
+            imageBurger = "/assets/burgers/SIGNATURE_BEEF_BBQ_BURGER_(1_VIANDE).png"
+        }
+
+        detail.innerHTML = `
+        <div class="menu-detail-content">
+            <img src="/assets/images/supprimer.png" class="close-btn">
+            <h2>Faites votre choix parmi nos ${categorieActive}</h2>
+            <div class="produit-zoom">
+                <img src="${imageBurger}" alt="${nomProduit}">
+                <h3>${nomProduit}</h3>
+            </div>
+            <div class="compteur">
+                <button id="moins">-</button>
+                <span id="quantite">1</span>
+                <button id="plus">+</button>
+            </div>
+            <button>Ajouter au panier</button>
+        </div>`;
+    }
+      
+    document.body.appendChild(detail); 
+
+    
+document.getElementById("moins").addEventListener("click", () => {
+        const q = document.getElementById("quantite");
+        if(parseInt(q.textContent) > 1) q.textContent = parseInt(q.textContent) - 1;
     });
 
-    document.getElementById("btn-xxl").addEventListener("click", () => {
-        console.log("XXL choisi pour", titreMenu);
-        
+    document.getElementById("plus").addEventListener("click", () => {
+        const q = document.getElementById("quantite");
+        q.textContent = parseInt(q.textContent) + 1;
     });
+
+    detail.querySelector(".close-btn").addEventListener("click", () => {
+        detail.remove();
+    });
+   
+
 });
 
