@@ -9,6 +9,7 @@ const menuContainer = document.getElementById("menu-container");
 const menuCarte = document.getElementById("menu-detail");
 
 
+
 let categories = [];
 let categorieActive = "";
 let index = 0;
@@ -127,8 +128,12 @@ menuContainer.addEventListener("click", (e) => {
             <h2>Une grosse faim ?</h2>
             <p>Le menu maxi Best Of comprend un sandwich, une grande frite et une boisson 50 Cl</p>
             <div class="menu-detail-image">
+             <div class="menu-card">
                 <img src="/assets/images/illustration-best-of.png" class="btn-xl">
+             </div>
+              <div class="menu-card">   
                 <img src="/assets/images/illustration-maxi-best-of.png" class="btn-xxl">
+                </div>
             </div>
             <button>Étape suivante</button>
         </div>`;
@@ -165,7 +170,7 @@ menuContainer.addEventListener("click", (e) => {
             <p>Choisissez la taille de votre boisson pour votre ${nomProduit}, +0.50€ pour le format 50 Cl</p>
             <div class="menu-detail-image">
                 <div class="menu-card">
-                    <img src="${imageBoisson}" class="small">
+                    <img src="${imageBoisson}">
                     <h2>30Cl</h2>
                 </div>
                 <div class="menu-card">
@@ -178,7 +183,7 @@ menuContainer.addEventListener("click", (e) => {
                 <span id="quantite">1</span>
                 <button id="plus">+</button>
             </div>
-            <button>Étape suivante</button>
+             <button class="panier">Ajouter au panier</button>
         </div>`;
 
     } else if (categorieActive === "burgers") {
@@ -218,16 +223,18 @@ menuContainer.addEventListener("click", (e) => {
         <div class="menu-detail-content">
             <img src="/assets/images/supprimer.png" class="close-btn">
             <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-            <div class="produit-zoom">
+            <div class="menu-detail-image">
+             <div class="menu-card">
                 <img src="${imageBurger}" alt="${nomProduit}">
                 <h3>${nomProduit}</h3>
+                </div>
             </div>
             <div class="compteur">
                 <button id="moins">-</button>
                 <span id="quantite">1</span>
                 <button id="plus">+</button>
             </div>
-            <button>Ajouter au panier</button>
+             <button class="panier">Ajouter au panier</button>
         </div>`;
     } else if (categorieActive === "frites") {
         let imageFrite = "";
@@ -248,16 +255,18 @@ menuContainer.addEventListener("click", (e) => {
         <div class="menu-detail-content">
             <img src="/assets/images/supprimer.png" class="close-btn">
             <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-            <div class="produit-zoom">
+              <div class="menu-detail-image">
+                <div class="menu-card">
                 <img src="${imageFrite}" alt="${nomProduit}">
                 <h3>${nomProduit}</h3>
+                </div>
             </div>
             <div class="compteur">
                 <button id="moins">-</button>
                 <span id="quantite">1</span>
                 <button id="plus">+</button>
             </div>
-            <button>Ajouter au panier</button>
+             <button class="panier">Ajouter au panier</button>
         </div>`;
 
     } else if (categorieActive === "encas") {
@@ -277,16 +286,18 @@ menuContainer.addEventListener("click", (e) => {
         <div class="menu-detail-content">
             <img src="/assets/images/supprimer.png" class="close-btn">
             <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-            <div class="produit-zoom">
-                <img src="${imageEncas}" alt="${nomProduit}">
+              <div class="menu-detail-image">
+                <div class="menu-card">
+                <img src="${imageEncas}" alt="${nomProduit}" class ="small">
                 <h3>${nomProduit}</h3>
+                </div>
             </div>
             <div class="compteur">
                 <button id="moins">-</button>
                 <span id="quantite">1</span>
                 <button id="plus">+</button>
             </div>
-            <button>Ajouter au panier</button>
+             <button class="panier">Ajouter au panier</button>
         </div>`;
 
     } else if (categorieActive === "wraps") {
@@ -306,16 +317,18 @@ menuContainer.addEventListener("click", (e) => {
         <div class="menu-detail-content">
             <img src="/assets/images/supprimer.png" class="close-btn">
             <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-            <div class="produit-zoom">
-                <img src="${imageWrap}" alt="${nomProduit}">
+              <div class="menu-detail-image">
+                <div class="menu-card">
+                <img src="${imageWrap}" alt="${nomProduit}" class="small">
                 <h3>${nomProduit}</h3>
+                </div>
             </div>
             <div class="compteur">
                 <button id="moins">-</button>
                 <span id="quantite">1</span>
                 <button id="plus">+</button>
             </div>
-            <button>Ajouter au panier</button>
+             <button class="panier">Ajouter au panier</button>
         </div>`;
 
     } else if (categorieActive === "salades") {
@@ -333,16 +346,18 @@ menuContainer.addEventListener("click", (e) => {
         <div class="menu-detail-content">
             <img src="/assets/images/supprimer.png" class="close-btn">
             <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-            <div class="produit-zoom">
+              <div class="menu-detail-image">
+                <div class="menu-card">
                 <img src="${imageSalade}" alt="${nomProduit}">
                 <h3>${nomProduit}</h3>
+                </div>
             </div>
             <div class="compteur">
                 <button id="moins">-</button>
                 <span id="quantite">1</span>
                 <button id="plus">+</button>
             </div>
-            <button>Ajouter au panier</button>
+             <button class="panier">Ajouter au panier</button>
         </div>`;
     } else if (categorieActive === "desserts") {
         let imageDessert = "";
@@ -371,16 +386,18 @@ menuContainer.addEventListener("click", (e) => {
         <div class="menu-detail-content">
             <img src="/assets/images/supprimer.png" class="close-btn">
             <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-            <div class="produit-zoom">
+              <div class="menu-detail-image">
+                <div class="menu-card">
                 <img src="${imageDessert}" alt="${nomProduit}" class="small">
                 <h3>${nomProduit}</h3>
+                </div>
             </div>
             <div class="compteur">
                 <button id="moins">-</button>
                 <span id="quantite">1</span>
                 <button id="plus">+</button>
             </div>
-            <button>Ajouter au panier</button>
+            <button class="panier">Ajouter au panier</button>
         </div>`;
 
     } else {
@@ -406,16 +423,18 @@ menuContainer.addEventListener("click", (e) => {
         <div class="menu-detail-content">
             <img src="/assets/images/supprimer.png" class="close-btn">
             <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-            <div class="produit-zoom">
+              <div class="menu-detail-image">
+                <div class="menu-card">
                 <img src="${imageSauce}" alt="${nomProduit}" class="small">
                 <h3>${nomProduit}</h3>
+                </div>
             </div>
             <div class="compteur">
                 <button id="moins">-</button>
                 <span id="quantite">1</span>
                 <button id="plus">+</button>
             </div>
-            <button>Ajouter au panier</button>
+             <button class="panier">Ajouter au panier</button>
         </div>`;
 
 
@@ -424,21 +443,42 @@ menuContainer.addEventListener("click", (e) => {
       
     document.body.appendChild(detail); 
 
-    
-document.getElementById("moins").addEventListener("click", () => {
-        const q = document.getElementById("quantite");
-        if(parseInt(q.textContent) > 1) q.textContent = parseInt(q.textContent) - 1;
-    });
+detail.addEventListener("click", (e) => {
+    const card = e.target.closest(".menu-card");
+    if(!card) return;
 
-    document.getElementById("plus").addEventListener("click", () => {
-        const q = document.getElementById("quantite");
-        q.textContent = parseInt(q.textContent) + 1;
-    });
+    document.querySelectorAll(".menu-card").forEach(c => c.classList.remove("selected"));
 
-    detail.querySelector(".close-btn").addEventListener("click", () => {
-        detail.remove();
-    });
-   
-
+    card.classList.add("selected");
 });
 
+detail.querySelector(".menu-card")?.click();
+
+
+detail.querySelector(".close-btn").addEventListener("click", () => {
+        detail.remove();
+});
+
+
+  let quantite = 1;
+const prixProduit = parseFloat(card.querySelector("p").textContent.replace(" €", ""));
+
+document.getElementById("moins").addEventListener("click", () => {
+    const quantity = document.getElementById("quantite");
+    if(parseInt(quantity.textContent) > 1) quantity.textContent = parseInt(quantity.textContent) - 1;
+    quantite = parseInt(quantity.textContent);
+});
+
+document.getElementById("plus").addEventListener("click", () => {
+    const quantity = document.getElementById("quantite");
+    quantity.textContent = parseInt(quantity.textContent) + 1;
+    quantite = parseInt(quantity.textContent);
+});
+
+detail.querySelector(".panier").addEventListener("click", () => {
+    const prixTotal = quantite * prixProduit;
+    console.log(prixTotal);
+    detail.remove();
+});
+    
+});
