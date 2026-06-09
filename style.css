@@ -174,11 +174,10 @@ transform: rotate(180deg);}
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    margin:2rem 2rem ;
+    margin: 2rem 2rem;
     gap: 10px;
-
+    position: relative;
 }
-
 
 .produit-card {
     height: 280px;
@@ -189,10 +188,9 @@ transform: rotate(180deg);}
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    justify-content: space-between; 
-    padding: 15px; 
+    justify-content: space-between;
+    padding: 15px;
     box-sizing: border-box;
-    
 }
 
 .produit-card img {
@@ -217,16 +215,193 @@ transform: rotate(180deg);}
 
 .produit-card p {
     font-size: 1rem;
-    font-weight: 600; 
+    font-weight: 600;
     text-align: left;
     margin: 0;
 }
 
 .categorie-titre {
-    width: 100%;          
-    text-align: left;  
-    font-size: 1.5rem;      
-    margin-bottom: 2rem;  
-    color: #333;     
-    margin: 2rem 4rem;    
+    width: 100%;
+    text-align: left;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #333;
+    margin: 2rem 4rem;
+}
+
+.menu-detail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.menu-detail-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 90%;
+    max-width: 500px;
+    
+
+}
+
+.menu-detail-content h2 {
+    font-size: 1.3rem;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+}
+
+.menu-detail-content p {
+    font-size: 1rem;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+}
+
+.menu-detail-content button {
+    height: 50px;
+    width: 150px;
+    background-color: #ffc837;
+    border: none;
+    border-radius: 15px;
+    font-weight: 900;
+}
+
+.menu-detail-image {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 80px;
+    overflow-x: auto; 
+     scroll-snap-type: x mandatory;
+}
+
+.close-btn {
+    align-self: flex-end;
+    height: 25px;
+    cursor: pointer;
+}
+
+.return-btn {
+    align-self: start;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 1px solid black;
+    padding: 15px;
+    position: relative;
+    top : -3rem
+}
+
+.menu-card {
+    border: 5px solid rgba(128, 128, 128, 0.395);
+    padding: 15px 30px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+    flex-shrink: 0;      
+}
+
+
+.menu-card.selected {
+    border: 5px solid #ffc837;
+}
+
+.menu-card h3 {
+    text-align: center;
+}
+
+.compteur {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+}
+
+.small {
+    height: 100px;
+    margin-top: 2rem;
+   
+}
+
+.compteur span {
+    width: 80px;
+    text-align: center;
+}
+
+#moins, #plus {
+    width: 50px;
+}
+
+.panier {
+    cursor: pointer;
+}
+
+.menu-detail-image.carousel {
+    justify-content: flex-start;
+    gap: 16px;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    cursor: grab;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 16px;
+}
+
+.menu-detail-image.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.menu-detail-image.carousel .menu-card {
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    min-width: 150px;
+}
+
+@media (max-width: 990px) {
+
+    .menu-detail-content {
+        margin: 0 2rem;
+    }
+
+    .menu-detail-image:not(.carousel) {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .menu-detail-image.carousel {
+        flex-direction: row;
+        padding: 10px 16px;
+    }
+
+    .menu-detail-image img {
+        height: 100px;
+    }
+
+    .menu-detail-content p {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .menu-detail-content h2 {
+        font-size: 1.3rem;
+        text-align: center;
+    }
 }
