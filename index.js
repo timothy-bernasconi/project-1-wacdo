@@ -7,11 +7,14 @@ const btnGauche = document.getElementById("btn-prev");
 const btnDroite = document.getElementById("btn-next");
 const menuContainer = document.getElementById("menu-container");
 const menuCarte = document.getElementById("menu-detail");
+const monPanier = document.getElementById("my-order");
+const abandon = document.querySelector(".cancel");
 
 let categories = [];
 let categorieActive = "";
 let index = 0;
-
+let panier = [];
+let friteSelectionnee = ""; 
 async function chargerCategories() {
     try {
         const response = await fetch("categories.json");
@@ -19,6 +22,7 @@ async function chargerCategories() {
         categories = await response.json();
         hero.style.display = "none";  
         catContainer.style.display = "flex";
+        monPanier.style.display ="flex";
         display(index);   
     } catch (error) {
         console.error(error.message);
@@ -77,6 +81,7 @@ catCards.addEventListener("click", async (e) => {
         const produits = data[titreMenu];
 
         menuContainer.style.display = "flex";
+        
         menuContainer.innerHTML = "";
 
         if (!produits) {
@@ -434,16 +439,21 @@ menuContainer.addEventListener("click", (e) => {
                     <div class="menu-detail-image">
                         <div class="menu-card">
                             <img src="/assets/frites/MOYENNE_FRITE.png" class="small">
+                            <h3>Moyenne Frite</h3>
                         </div>
                         <div class="menu-card">   
                             <img src="/assets/frites/POTATOES.png" class="small">
+                            <h3>Potatoes</h3>
                         </div>
                     </div>
                     <button class="order-menu-drink">Étape suivante</button>
                 </div>`;
         }
 
+       
         if(e.target.closest(".order-menu-drink")) {
+            friteSelectionnee = detail.querySelector(".menu-card.selected h3")?.textContent || "Non définie";
+
             fetch("produits.json")
                 .then(res => res.json())
                 .then(data => {
@@ -490,7 +500,6 @@ menuContainer.addEventListener("click", (e) => {
     const prixTexte = card.querySelector("p")?.textContent.replace(" €", "");
     const prixProduit = prixTexte ? parseFloat(prixTexte) : 0;
 
-    // SÉCURITÉ AJOUTÉE : On vérifie si l'élément "moins" existe avant de lui lier un événement
     const btnMoins = document.getElementById("moins");
     if (btnMoins) {
         btnMoins.addEventListener("click", () => {
@@ -512,8 +521,67 @@ menuContainer.addEventListener("click", (e) => {
     detail.addEventListener("click", (e) => {
         if (e.target.closest(".panier")) {
             const prixTotal = quantite * prixProduit;
-            console.log(prixTotal);
+            
+            const produitCommande = {
+                nom: nomProduit,
+                categorie: categorieActive,
+                quantite: quantite,
+                prixUnitaire: prixProduit,
+                prixTotal: prixTotal
+            };
+
+            if (categorieActive === "menus") {
+                const boissonSelectionnee = detail.querySelector(".menu-detail-image.carousel .menu-card.selected h3")?.textContent;                
+                produitCommande.details = {
+                    frite: friteSelectionnee,
+                    boisson: boissonSelectionnee || "Non définie"
+                };
+            }
+
+            panier.push(produitCommande);
+
+            const divListe = document.getElementById("panier-liste");
+            const ligneProduit = document.createElement("div");
+            ligneProduit.className = "line-order"; 
+
+            ligneProduit.innerHTML = `
+                <span>${produitCommande.nom}
+                    ${produitCommande.details?.frite ? `<br><small>${produitCommande.details.frite}</small>` : ""}
+                    ${produitCommande.details?.boisson ? `<br><small>${produitCommande.details.boisson}</small>` : ""}
+                </span>
+                <img src="/assets/images/trash.png" class="delete-item-btn">
+            `;
+
+            ligneProduit.querySelector("img").addEventListener("click", () => {
+                panier = panier.filter(p => p !== produitCommande); 
+                ligneProduit.remove();
+                recalculerEtAfficherTotal();
+            });
+
+            divListe.appendChild(ligneProduit);
             detail.remove();
+
+            recalculerEtAfficherTotal();
         }
     });
 });
+
+
+abandon.addEventListener("click", () => {
+    panier = []; 
+    document.getElementById("panier-liste").innerHTML = ""; 
+    recalculerEtAfficherTotal(); 
+});
+
+function recalculerEtAfficherTotal() {
+    const divTotal = document.getElementById("order-total");
+    
+    const totalGlobal = panier.reduce((acc, produit) => acc + produit.prixTotal, 0);
+
+    divTotal.innerHTML = `
+        <div class="total">
+            <hr>
+            <span>Total : ${totalGlobal.toFixed(2)} €</span>
+        </div>
+    `;
+}
