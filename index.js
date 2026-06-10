@@ -1,3 +1,5 @@
+// Déclaration de mes constantes //
+
 const hero = document.getElementById("section-hero");
 const catContainer = document.getElementById("cat-container");
 const catCards = document.getElementById("cat-cards");
@@ -10,40 +12,62 @@ const menuCarte = document.getElementById("menu-detail");
 const monPanier = document.getElementById("my-order");
 const abandon = document.querySelector(".cancel");
 
-let categories = [];
-let categorieActive = "";
-let index = 0;
-let panier = [];
+
+// les variables globales //
+
+let categories = []; // liste des categories de produits //
+let categorieActive = ""; // categorie sur lequelle l'utilisateur a clické
+let index = 0; // compteur de défilement des catégories 
+let panier = []; // le panier vide 
 let friteSelectionnee = ""; 
+
+// Pour charger les catégories //
 async function chargerCategories() {
     try {
+        // on récupère le json
         const response = await fetch("categories.json");
+        // si pas de json, afficher erreur //
         if(!response.ok) throw new Error(`Erreur HTTP : ${response.status}`);
+        // on traduit le json en un tableau js
         categories = await response.json();
+        // on cache première page et on réaffiche les catégories et le panier //
         hero.style.display = "none";  
         catContainer.style.display = "flex";
         monPanier.style.display ="flex";
+        // les categories se chargent depuis le début de l'index (soit 0)
         display(index);   
+        // si erreur de chargement
     } catch (error) {
         console.error(error.message);
     }
 }
 
+// Pour afficher les cartes du panier //
 function display(i) {
+    // on vide d'abord le contenu //
     catCards.innerHTML = "";
+    // on fait une boucle pour afficher le carrousel à l'infini ///
+ 
     for(let j = 0; j < categories.length; j++) {
+        // pour revenir au début du tableau //
         const cat = categories[(i + j) % categories.length]; 
+        // on crée la div dans laquelle on va afficher les cartes
         const div = document.createElement("div");
+        // ajout class + le contenu //
         div.classList.add("cat-card");
         div.innerHTML = `
             <img src="${cat.image}" alt="${cat.title}">
             <h2>${cat.title}</h2>`;
+        // création de la carte html //
         catCards.appendChild(div);
     }
 }
 
+// la logique du carousel, au clic on avance ou on recule selon le bt1 ou btn2 //
 btn1.addEventListener("click", chargerCategories);
 btn2.addEventListener("click", chargerCategories);
+
+// avancer
 
 btnDroite.addEventListener("click", () => {
     index++;
@@ -51,49 +75,71 @@ btnDroite.addEventListener("click", () => {
     display(index);
 });
 
+//reculer //
+
 btnGauche.addEventListener("click", () => {
     index--;
     if(index < 0) index = categories.length - 1; 
     display(index);
 });
 
+// event pour encadrer la catégorie que l'user a choisie //
 catCards.addEventListener("click", (e) => {
+    // on cible l'element le plus proche, donc .cat-card
     const card = e.target.closest(".cat-card");
     if(!card) return;
 
+    // on enelève la class a toutes les cartes et on l'ajoute a celle choisie //
     document.querySelectorAll(".cat-card").forEach(c => c.classList.remove("selected"));
     card.classList.add("selected");
 });
 
+
+// pour afficher les produits //
+
 catCards.addEventListener("click", async (e) => {
+    // on cible l'element le plus proche, donc .cat-card
+
     const card = e.target.closest(".cat-card");
     if (!card) return;
     
+    // on stoppe l'évènement
     e.stopPropagation();
 
     const titreMenu = card.querySelector("h2").textContent;
     categorieActive = titreMenu;
+
     try {
+        // On va chercher tous les produits //
         const responseProduits = await fetch("produits.json"); 
+        // si bug du json //
         if (!responseProduits.ok) throw new Error("Erreur lors du chargement du JSON");
         
         const data = await responseProduits.json();
+
+        // on récupère la sous liste, qu'on a mis avant pour afficher correctement les produits //
         const produits = data[titreMenu];
 
+        // on réaffiche la div des produits //
         menuContainer.style.display = "flex";
         
+        // on la vide //
         menuContainer.innerHTML = "";
 
+        // si il n'y a pas de produits correspondants au titre //
         if (!produits) {
             menuContainer.innerHTML = "<p>Aucun produit trouvé dans cette catégorie.</p>";
             return;
         }
 
+        // on affiche le titre, que l'on crée avant
         const titre = document.createElement("h2");
         titre.classList.add("categorie-titre");
         titre.innerHTML = `Nos ${titreMenu}`; 
+          // on ajoute dans le HTML //
         menuContainer.appendChild(titre);
 
+        // création de la carte pour chaque produit
         produits.forEach(produit => {
             const div = document.createElement("div");
             div.classList.add("produit-card");
@@ -104,24 +150,35 @@ catCards.addEventListener("click", async (e) => {
                 <p>${produit.prix} €</p>
                 </div>
             `;
+            // on ajoute dans le HTML //
             menuContainer.appendChild(div);
         });
 
+        // en cas d'erreurs //
     } catch (error) {
         console.error("Erreur :", error);
         menuContainer.innerHTML = "<p>Une erreur est survenue lors du chargement des menus.</p>";
     }
 });
 
+// pour afficher les différentes pages selon la catégorie //
+
 menuContainer.addEventListener("click", (e) => {
+    // idem cibler element le plus proche //
     const card = e.target.closest(".produit-card");
     if(!card) return;
 
+    // la page qui va contenir les infos //
     const nomProduit = card.querySelector("h2").textContent;
     const detail = document.createElement("div");
     detail.classList.add("menu-detail");
    
+// logique if / else comme les images et le contenu vont varier selon les catégories //
+
+// pour les menus // 
+
     if(categorieActive === "menus") {
+        // contenu page, pas de second if car il n'y a que 2 images pour différencier les menus  // 
         detail.innerHTML = `
         <div class="menu-detail-content">
             <img src="/assets/images/supprimer.png" class="close-btn">
@@ -137,6 +194,7 @@ menuContainer.addEventListener("click", (e) => {
             </div>
             <button class ="order-menu">Étape suivante</button>
         </div>`;
+// pour les boisson, second if pour afficher les bonnes images au bons produits // 
 
     } else if (categorieActive === "boissons") {
         let imageBoisson = "";
@@ -157,7 +215,7 @@ menuContainer.addEventListener("click", (e) => {
         } else {
             imageBoisson = "/assets/boissons/jus-pomme-bio.png"
         }
-    
+    // idem pour la page, + ajout d'un compteur pour augmenter nombre produit dans la commande, la logique sera partout sauf au menus //
         detail.innerHTML = `
         <div class="menu-detail-content">
             <img src="/assets/images/supprimer.png" class="close-btn">
@@ -180,7 +238,7 @@ menuContainer.addEventListener("click", (e) => {
             </div>
              <button class="panier">Ajouter au panier</button>
         </div>`;
-
+// pour la page burger //
     } else if (categorieActive === "burgers") {
         let imageBurger = "";
         if (nomProduit === "Le 280") {
@@ -228,6 +286,7 @@ menuContainer.addEventListener("click", (e) => {
             </div>
              <button class="panier">Ajouter au panier</button>
         </div>`;
+ // pour la page frites //       
     } else if (categorieActive === "frites") {
         let imageFrite = "";
         if (nomProduit === "Petite Frite") {
@@ -259,7 +318,7 @@ menuContainer.addEventListener("click", (e) => {
             </div>
              <button class="panier">Ajouter au panier</button>
         </div>`;
-
+// pour la page encas //
     } else if (categorieActive === "encas") {
        let imageEncas = "";
         if(nomProduit === "Cheeseburger"){
@@ -289,6 +348,7 @@ menuContainer.addEventListener("click", (e) => {
             </div>
              <button class="panier">Ajouter au panier</button>
         </div>`;
+// pour la page wraps //
 
     } else if (categorieActive === "wraps") {
         let imageWrap = "";
@@ -319,6 +379,7 @@ menuContainer.addEventListener("click", (e) => {
             </div>
              <button class="panier">Ajouter au panier</button>
         </div>`;
+// pour la page salades //
 
     } else if (categorieActive === "salades") {
         let imageSalade ="";
@@ -347,6 +408,8 @@ menuContainer.addEventListener("click", (e) => {
             </div>
              <button class="panier">Ajouter au panier</button>
         </div>`;
+    // pour la page desserts //
+
     } else if (categorieActive === "desserts") {
         let imageDessert = "";
         if(nomProduit === "Brownie") {
@@ -387,6 +450,7 @@ menuContainer.addEventListener("click", (e) => {
             <button class="panier">Ajouter au panier</button>
         </div>`;
 
+        // on termine avec les sauces //
     } else {
         let imageSauce = "";
         if (nomProduit === "Classic Barbecue") {
@@ -424,11 +488,13 @@ menuContainer.addEventListener("click", (e) => {
         </div>`;
     }
 
+// la croix permet de fermer la page, logique identique pour toutes les pages des produits de catégories //
+
     detail.addEventListener("click", (e) => {
         if (e.target.closest(".close-btn")) {
             detail.remove();
         }
-
+// comme le menu contient plusieurs pages, on cible le bouton étape suivante et on modifies le contenu //
         if (e.target.closest(".order-menu")) {
             detail.innerHTML = `
                 <div class="menu-detail-content">
@@ -450,9 +516,11 @@ menuContainer.addEventListener("click", (e) => {
                 </div>`;
         }
 
-       
+    // pareil pour la page suivante //
         if(e.target.closest(".order-menu-drink")) {
             friteSelectionnee = detail.querySelector(".menu-card.selected h3")?.textContent || "Non définie";
+
+// affichage d'un carousel pour les boissons, on le récupère du json //
 
             fetch("produits.json")
                 .then(res => res.json())
@@ -479,9 +547,11 @@ menuContainer.addEventListener("click", (e) => {
                 });
         }
     });
-      
+
+    // ajout sur HTML //       
     document.body.appendChild(detail); 
 
+    // pour permettre de sélectionner les produits dans les menus, logique identique au catégories //
     detail.addEventListener("click", (e) => {
         const card = e.target.closest(".menu-card");
         if(!card) return;
@@ -490,38 +560,57 @@ menuContainer.addEventListener("click", (e) => {
         card.classList.add("selected");
     });
 
+    // simulation d'un clic pour automatique sélectionner un produit //
     detail.querySelector(".menu-card")?.click();
 
+    // pour fermer la page //
     detail.querySelector(".close-btn").addEventListener("click", () => {
         detail.remove();
     });
 
+    // logique du panier //
+
+   // quantité initialie //
+
     let quantite = 1;
+    // on récupère le produit //
     const prixTexte = card.querySelector("p")?.textContent.replace(" €", "");
     const prixProduit = prixTexte ? parseFloat(prixTexte) : 0;
 
+    // logique pour diminuer la quantité de produits //
     const btnMoins = document.getElementById("moins");
     if (btnMoins) {
         btnMoins.addEventListener("click", () => {
+            // pour ne pas descendre en dessous de 1 //
             const quantity = document.getElementById("quantite");
             if(parseInt(quantity.textContent) > 1) quantity.textContent = parseInt(quantity.textContent) - 1;
+            // actualisation de la quantité //
             quantite = parseInt(quantity.textContent);
         });
     }
-
+     
+    // logique pour augmenter la quantité //
     const btnPlus = document.getElementById("plus");
     if (btnPlus) {
         btnPlus.addEventListener("click", () => {
             const quantity = document.getElementById("quantite");
             quantity.textContent = parseInt(quantity.textContent) + 1;
+            // actualisation de la quantité //
             quantite = parseInt(quantity.textContent);
         });
     }
 
     detail.addEventListener("click", (e) => {
+
+        // vérifcation si clic //
+
         if (e.target.closest(".panier")) {
+
+            // calcul prix total //
             const prixTotal = quantite * prixProduit;
             
+            // création de l'objet représentant le produit commandé
+
             const produitCommande = {
                 nom: nomProduit,
                 categorie: categorieActive,
@@ -530,7 +619,10 @@ menuContainer.addEventListener("click", (e) => {
                 prixTotal: prixTotal
             };
 
+            // si c'est dans la catégories menu, on récupère frites et boissons //
             if (categorieActive === "menus") {
+
+                // récupèrer boisson //
                 const boissonSelectionnee = detail.querySelector(".menu-detail-image.carousel .menu-card.selected h3")?.textContent;                
                 produitCommande.details = {
                     frite: friteSelectionnee,
@@ -538,27 +630,41 @@ menuContainer.addEventListener("click", (e) => {
                 };
             }
 
+            // ajout dans le panier //
+
             panier.push(produitCommande);
 
+            // la div qui va afficher tous les produits //
+
             const divListe = document.getElementById("panier-liste");
+
+            // la ligne qui va afficher le produit//
             const ligneProduit = document.createElement("div");
+            // ajout de la classe //
             ligneProduit.className = "line-order"; 
 
+            // contenu de la ligne //
+
             ligneProduit.innerHTML = `
-                <span>${produitCommande.nom}
+                <span>${produitCommande.quantite} ${produitCommande.nom}
                     ${produitCommande.details?.frite ? `<br><small>${produitCommande.details.frite}</small>` : ""}
                     ${produitCommande.details?.boisson ? `<br><small>${produitCommande.details.boisson}</small>` : ""}
                 </span>
                 <img src="/assets/images/trash.png" class="delete-item-btn">
             `;
 
+            // suppression d'un produit au clic sur l'image //
             ligneProduit.querySelector("img").addEventListener("click", () => {
                 panier = panier.filter(p => p !== produitCommande); 
+                // suppression ligne //
                 ligneProduit.remove();
+                // recalcul et affichage total //
                 recalculerEtAfficherTotal();
             });
 
+            // ajout dans HTML //
             divListe.appendChild(ligneProduit);
+            // on ferme la page //
             detail.remove();
 
             recalculerEtAfficherTotal();
@@ -566,18 +672,25 @@ menuContainer.addEventListener("click", (e) => {
     });
 });
 
+// pour abandonner le panier //
 
 abandon.addEventListener("click", () => {
+    // panier vide de base //
     panier = []; 
+    // on vide affichage produit //
     document.getElementById("panier-liste").innerHTML = ""; 
+    // total à zéro//
     recalculerEtAfficherTotal(); 
 });
 
+// pour recalculer le total //
 function recalculerEtAfficherTotal() {
+    // le conteneur //
     const divTotal = document.getElementById("order-total");
-    
+    // le calcul //
     const totalGlobal = panier.reduce((acc, produit) => acc + produit.prixTotal, 0);
 
+    // maj du contenu //
     divTotal.innerHTML = `
         <div class="total">
             <hr>
