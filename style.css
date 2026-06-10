@@ -511,3 +511,32 @@ transform: rotate(180deg);}
 .total span {
     margin-top: 2rem;
 }
+
+
+@media (max-width: 990px) {
+    #my-order {
+        width: 220px; 
+        padding: 30px 10px;
+    }
+
+    .order-buttons {
+        flex-direction: column;
+    }
+
+    .order-buttons button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    #my-order {
+        position: static;
+        width: 100%;
+        padding: 20px;
+        margin-top: 2rem;
+    }
+
+    .order-buttons {
+        flex-direction: row;
+    }
+}
