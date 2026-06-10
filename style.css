@@ -467,7 +467,7 @@ transform: rotate(180deg);}
     justify-content: space-around;
     align-items: center;
     width: 100%;
-    margin-top: auto; 
+    margin-top: 2rem; 
     padding: 10px 0;
     gap: 10px;
     
@@ -539,4 +539,10 @@ transform: rotate(180deg);}
     .order-buttons {
         flex-direction: row;
     }
+}
+
+#number-order {
+    font-size: 1.2rem;
+    color: #ffc837;
+    margin-top: 1rem;
 }
