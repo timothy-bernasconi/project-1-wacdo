@@ -11,7 +11,8 @@ const menuContainer = document.getElementById("menu-container");
 const menuCarte = document.getElementById("menu-detail");
 const monPanier = document.getElementById("my-order");
 const abandon = document.querySelector(".cancel");
-
+const numCommande = document.getElementById("number-order")
+const choix = document.getElementById("choice");
 
 // les variables globales //
 
@@ -20,6 +21,8 @@ let categorieActive = ""; // categorie sur lequelle l'utilisateur a clické
 let index = 0; // compteur de défilement des catégories 
 let panier = []; // le panier vide 
 let friteSelectionnee = ""; 
+let commandOrder = 0;
+let commandOrderSecond = 0; 
 
 // Pour charger les catégories //
 async function chargerCategories() {
@@ -63,9 +66,30 @@ function display(i) {
     }
 }
 
+// générer numéro commande sur place //
+
+function commandNumber() {
+    commandOrder++;
+    numCommande.textContent = `Commande n°${commandOrder}`;
+    choix.textContent = `Sur place`;
+}
+
+// générer numéro commande à emporter, pour différencier si meme numéro on rajoutera un A sur la commande à emporter soit A001, A002  //
+
+function commandNumberSecond() {
+    commandOrderSecond++;
+    numCommande.textContent = `Commande n°A${commandOrderSecond}`;
+    choix.textContent = `A emporter`;
+
+}
+
 // la logique du carousel, au clic on avance ou on recule selon le bt1 ou btn2 //
+// création d'un numéro de commande via le meme bouton //
+
 btn1.addEventListener("click", chargerCategories);
+btn1.addEventListener("click", commandNumber);
 btn2.addEventListener("click", chargerCategories);
+btn2.addEventListener("click", commandNumberSecond);
 
 // avancer
 
@@ -698,3 +722,4 @@ function recalculerEtAfficherTotal() {
         </div>
     `;
 }
+
