@@ -11,6 +11,7 @@ const menuContainer = document.getElementById("menu-container");
 const menuCarte = document.getElementById("menu-detail");
 const monPanier = document.getElementById("my-order");
 const abandon = document.querySelector(".cancel");
+const payer = document.querySelector(".pay");
 const numCommande = document.getElementById("number-order")
 const choix = document.getElementById("choice");
 
@@ -23,6 +24,7 @@ let panier = []; // le panier vide
 let friteSelectionnee = ""; 
 let commandOrder = 0;
 let commandOrderSecond = 0; 
+
 
 // Pour charger les catégories //
 async function chargerCategories() {
@@ -72,6 +74,7 @@ function commandNumber() {
     commandOrder++;
     numCommande.textContent = `Commande n°${commandOrder}`;
     choix.textContent = `Sur place`;
+    return commandOrder;
 }
 
 // générer numéro commande à emporter, pour différencier si meme numéro on rajoutera un A sur la commande à emporter soit A001, A002  //
@@ -80,8 +83,22 @@ function commandNumberSecond() {
     commandOrderSecond++;
     numCommande.textContent = `Commande n°A${commandOrderSecond}`;
     choix.textContent = `A emporter`;
+    return commandOrderSecond;
 
 }
+
+// chiffre aléatoire pour numéro chevallet //
+
+function tableNumber() {
+    return Math.floor(Math.random() * 9) + 1;
+}
+function tableNumber2() {
+    return Math.floor(Math.random() * 9) + 1;
+}
+function tableNumber3() {
+    return Math.floor(Math.random() * 9) + 1;
+}
+
 
 // la logique du carousel, au clic on avance ou on recule selon le bt1 ou btn2 //
 // création d'un numéro de commande via le meme bouton //
@@ -706,6 +723,81 @@ abandon.addEventListener("click", () => {
     // total à zéro//
     recalculerEtAfficherTotal(); 
 });
+
+// pour payer //
+payer.addEventListener("click", () => {
+
+    // pour générer 3 chiffres alétoires, solution assez robuste //
+
+   const numeroTable = tableNumber();
+   const numeroTable2 = tableNumber2();
+   const numeroTable3 = tableNumber3();
+
+   // création page et on retire l'affichage du reste
+
+    const confirmation = document.createElement("div");
+    catContainer.style.display = "none";
+    monPanier.style.display ="none";
+    menuContainer.style.display="none";
+
+// contenu de la page //
+
+    confirmation.innerHTML = `
+        <div class="end-page">
+        <div class ="end-page-card">
+        <h2>Pour être servis à table,</h2>
+        <h3> Récupérez un chevalet et indiquez ici le numéro inscrit dessus <h3>
+        <div class="span-number">
+        <span class="number-card">${numeroTable}</span>
+        <span class="number-card">${numeroTable2}</span>
+        <span class="number-card">${numeroTable3}</span>
+        </div>
+        <button class="closing-page"> Enregister le numéro </button>
+        </div>
+       
+        </div>
+    `;
+
+    // au clic sur closing-page
+
+    confirmation.addEventListener("click", (e) => {
+    const buttonOut = e.target.closest(".closing-page");
+
+    if(buttonOut) {
+        confirmation.innerHTML = `
+        <div class="end-page">
+        <div class ="end-page-card">
+        <h2>Toute l’équipe vous remercie,</h2>
+        <h3> Et vous souhaite un bon appétit dans nos restaurants, <h3>
+        <h4> A bientôt ! </h4>
+        <button class="new-command"> Nouvelle commande </button>
+        </div>
+       
+        </div>
+    `;
+   }
+
+   // la dernière page //
+
+   confirmation.addEventListener("click", () => {
+    const newOrder = e.target.closest(".new-command");
+
+    if(newOrder) {
+        confirmation.remove();
+        catContainer.style.display = "flex";
+        monPanier.style.display ="flex";
+    }
+
+   })
+        
+
+});
+document.body.appendChild(confirmation);
+});
+
+
+
+
 
 // pour recalculer le total //
 function recalculerEtAfficherTotal() {
