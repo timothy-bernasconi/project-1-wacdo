@@ -8,6 +8,10 @@ body {
     font-family: "Source Sans 3", sans-serif;
     font-style: regular;
 }
+
+button {
+    cursor: pointer;
+}
 .hero {
     display: flex;
     justify-content: center;
@@ -15,8 +19,8 @@ body {
     background-image: url(./assets/images/mc_landing_banner.png);
     background-size: auto;
     background-position: bottom;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: auto;
     filter: opacity(0.9);
 }
 h1 {
@@ -63,6 +67,7 @@ h2 {
     flex-direction: column;
     padding: 40px 0;
     margin-top: 3rem;
+    cursor: pointer;
 }
 .choice-card img {
     height: 90%;
@@ -131,6 +136,7 @@ h2 {
     align-items: center;
     flex-direction: column;
     background-color: white;
+    cursor: pointer;
 }
 
 .selected {
@@ -194,6 +200,7 @@ transform: rotate(180deg);}
     justify-content: space-between;
     padding: 15px;
     box-sizing: border-box;
+    cursor: pointer;
 }
 
 .produit-card img {
@@ -219,7 +226,7 @@ transform: rotate(180deg);}
 .produit-card p {
     font-size: 1rem;
     font-weight: 600;
-    text-align: left;
+    text-align: center;
     margin: 0;
 }
 
@@ -327,6 +334,8 @@ transform: rotate(180deg);}
 
 .menu-card h3 {
     text-align: center;
+    font-size: 1rem;
+    margin-bottom: 3rem;
 }
 
 .compteur {
@@ -513,22 +522,8 @@ transform: rotate(180deg);}
 }
 
 
-@media (max-width: 990px) {
-    #my-order {
-        width: 220px; 
-        padding: 30px 10px;
-    }
 
-    .order-buttons {
-        flex-direction: column;
-    }
-
-    .order-buttons button {
-        width: 100%;
-    }
-}
-
-@media (max-width: 767px) {
+@media (max-width: 1200px) {
     #my-order {
         position: static;
         width: 100%;
@@ -545,4 +540,96 @@ transform: rotate(180deg);}
     font-size: 1.2rem;
     color: #ffc837;
     margin-top: 1rem;
+}
+
+.end-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-image: url(./assets/images/mc_landing_banner.png);
+    background-size: auto;
+    background-position: bottom;
+    height: 100vh;
+    width: auto;
+    filter: opacity(0.9);
+
+}
+
+.end-page-card {
+    
+    height: 410px;
+    width: 550px;
+    background-color: white;
+    padding: 0 25px 25px 25px;
+    border-radius: 15px;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.354);
+
+}
+
+.end-page-card h2, h3 {
+    margin-top : 2.2rem;
+}
+
+.end-page-card button {
+    padding: 10px 25px;
+    border-radius: 10px;
+    width: auto;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffc837;
+    border: none;
+    font-weight: 900;
+    margin: 3rem auto;
+    
+}
+
+.span-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    gap: 50px;
+
+}
+
+.number-card {
+    font-size: 8rem;
+    text-align: center;
+    text-decoration: underline;
+}
+
+@media (max-width : 990px) {
+    .end-page-card {
+        height: auto;
+        width: 300px;
+        top: 0;
+        left: 0;
+    }
+    
+    h2, h3 {
+        text-align: center;
+    }
+
+    .number-card {
+        font-size: 5rem;
+    }
+    
+}
+@media (max-width : 767px) {
+
+    .end-page-card {
+        width: 160px;
+    }
+
+    .number-card {
+        font-size: 2.5rem;
+    }
+}
+
+.end-page h4 {
+    font-size: 2rem;
+    text-align: center;
 }
