@@ -228,9 +228,11 @@ menuContainer.addEventListener("click", (e) => {
             <div class="menu-detail-image">
              <div class="menu-card">
                 <img src="/assets/images/illustration-best-of.png">
+                <p> Menu Best Of </p>
              </div>
               <div class="menu-card">   
                 <img src="/assets/images/illustration-maxi-best-of.png">
+                <p> Menu Maxi Best Of </p>
                 </div>
             </div>
             <button class ="order-menu">Étape suivante</button>
@@ -557,6 +559,25 @@ menuContainer.addEventListener("click", (e) => {
                 </div>`;
         }
 
+        // logique de retour en arrière, assez peu optimisée
+
+        if(e.target.closest(".return-btn")) {
+            detail.innerHTML = `<div class="menu-detail-content">
+            <img src="/assets/images/supprimer.png" class="close-btn">
+            <h2>Une grosse faim ?</h2>
+            <p>Le menu maxi Best Of comprend un sandwich, une grande frite et une boisson 50 Cl</p>
+            <div class="menu-detail-image">
+             <div class="menu-card">
+                <img src="/assets/images/illustration-best-of.png">
+             </div>
+              <div class="menu-card">   
+                <img src="/assets/images/illustration-maxi-best-of.png">
+                </div>
+            </div>
+            <button class ="order-menu">Étape suivante</button>
+        </div>`;
+        }
+
     // pareil pour la page suivante //
         if(e.target.closest(".order-menu-drink")) {
             friteSelectionnee = detail.querySelector(".menu-card.selected h3")?.textContent || "Non définie";
@@ -794,10 +815,6 @@ payer.addEventListener("click", () => {
 });
 document.body.appendChild(confirmation);
 });
-
-
-
-
 
 // pour recalculer le total //
 function recalculerEtAfficherTotal() {
