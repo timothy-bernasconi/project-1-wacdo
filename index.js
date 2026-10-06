@@ -747,6 +747,8 @@ abandon.addEventListener("click", () => {
 
 // pour payer //
 payer.addEventListener("click", () => {
+    
+    if (panier.length === 0) return;
 
     // pour générer 3 chiffres alétoires, solution assez robuste //
 
@@ -767,7 +769,7 @@ payer.addEventListener("click", () => {
         <div class="end-page">
         <div class ="end-page-card">
         <h2>Pour être servis à table,</h2>
-        <h3> Récupérez un chevalet et indiquez ici le numéro inscrit dessus <h3>
+        <h3> Récupérez un chevalet et indiquez ici le numéro inscrit dessus </h3>
         <div class="span-number">
         <span class="number-card">${numeroTable}</span>
         <span class="number-card">${numeroTable2}</span>
