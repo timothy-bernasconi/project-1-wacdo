@@ -252,7 +252,7 @@ menuContainer.addEventListener("click", (e) => {
         } else if (nomProduit === "Ice Tea Pêche") {
             imageBoisson = "/assets/boissons/ice-tea-peche.png"
         } else if (nomProduit === "Ice Tea Citron") {
-            imageBoisson = "/assets/the-vert-citron-sans-sucres.png"
+            imageBoisson = "/assets/boissons/the-vert-citron-sans-sucres.png"
         } else if (nomProduit === "Jus d'Orange") {
             imageBoisson = "/assets/boissons/jus-orange.png"
         } else {
@@ -467,7 +467,7 @@ menuContainer.addEventListener("click", (e) => {
             imageDessert = "/assets/desserts/doghnut.png"
         } else if (nomProduit === "Macarons") {
             imageDessert = "/assets/desserts/macarons.png"
-        } else if (nomProduit === "Mc Fleury") {
+        } else if (nomProduit === "MC Fleury") {
             imageDessert = "/assets/desserts/MCFleury.png"
         } else if (nomProduit === "Muffin") {
             imageDessert = "/assets/desserts/muffin.png"
@@ -737,12 +737,14 @@ menuContainer.addEventListener("click", (e) => {
 // pour abandonner le panier //
 
 abandon.addEventListener("click", () => {
-    // panier vide de base //
-    panier = []; 
-    // on vide affichage produit //
-    document.getElementById("panier-liste").innerHTML = ""; 
-    // total à zéro//
-    recalculerEtAfficherTotal(); 
+    panier = [];
+    document.getElementById("panier-liste").innerHTML = "";
+    recalculerEtAfficherTotal();
+    menuContainer.innerHTML = "";
+    menuContainer.style.display = "none";
+    catContainer.style.display = "none";
+    monPanier.style.display = "none";
+    hero.style.display = "flex";
 });
 
 // pour payer //
