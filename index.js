@@ -252,7 +252,7 @@ menuContainer.addEventListener("click", (e) => {
         } else if (nomProduit === "Ice Tea Pêche") {
             imageBoisson = "/assets/boissons/ice-tea-peche.png"
         } else if (nomProduit === "Ice Tea Citron") {
-            imageBoisson = "/assets/the-vert-citron-sans-sucres.png"
+            imageBoisson = "/assets/boissons/the-vert-citron-sans-sucres.png"
         } else if (nomProduit === "Jus d'Orange") {
             imageBoisson = "/assets/boissons/jus-orange.png"
         } else {
@@ -467,7 +467,7 @@ menuContainer.addEventListener("click", (e) => {
             imageDessert = "/assets/desserts/doghnut.png"
         } else if (nomProduit === "Macarons") {
             imageDessert = "/assets/desserts/macarons.png"
-        } else if (nomProduit === "Mc Fleury") {
+        } else if (nomProduit === "MC Fleury") {
             imageDessert = "/assets/desserts/MCFleury.png"
         } else if (nomProduit === "Muffin") {
             imageDessert = "/assets/desserts/muffin.png"
@@ -737,16 +737,20 @@ menuContainer.addEventListener("click", (e) => {
 // pour abandonner le panier //
 
 abandon.addEventListener("click", () => {
-    // panier vide de base //
-    panier = []; 
-    // on vide affichage produit //
-    document.getElementById("panier-liste").innerHTML = ""; 
-    // total à zéro//
-    recalculerEtAfficherTotal(); 
+    panier = [];
+    document.getElementById("panier-liste").innerHTML = "";
+    recalculerEtAfficherTotal();
+    menuContainer.innerHTML = "";
+    menuContainer.style.display = "none";
+    catContainer.style.display = "none";
+    monPanier.style.display = "none";
+    hero.style.display = "flex";
 });
 
 // pour payer //
 payer.addEventListener("click", () => {
+    
+    if (panier.length === 0) return;
 
     // pour générer 3 chiffres alétoires, solution assez robuste //
 
@@ -767,7 +771,7 @@ payer.addEventListener("click", () => {
         <div class="end-page">
         <div class ="end-page-card">
         <h2>Pour être servis à table,</h2>
-        <h3> Récupérez un chevalet et indiquez ici le numéro inscrit dessus <h3>
+        <h3> Récupérez un chevalet et indiquez ici le numéro inscrit dessus </h3>
         <div class="span-number">
         <span class="number-card">${numeroTable}</span>
         <span class="number-card">${numeroTable2}</span>
@@ -779,39 +783,30 @@ payer.addEventListener("click", () => {
         </div>
     `;
 
-    // au clic sur closing-page
-
     confirmation.addEventListener("click", (e) => {
-    const buttonOut = e.target.closest(".closing-page");
-
-    if(buttonOut) {
+    // étape 1 -> page de remerciement
+    if (e.target.closest(".closing-page")) {
         confirmation.innerHTML = `
         <div class="end-page">
-        <div class ="end-page-card">
-        <h2>Toute l’équipe vous remercie,</h2>
-        <h3> Et vous souhaite un bon appétit dans nos restaurants, <h3>
-        <h4> A bientôt ! </h4>
-        <button class="new-command"> Nouvelle commande </button>
-        </div>
-       
-        </div>
-    `;
-   }
-
-   // la dernière page //
-
-   confirmation.addEventListener("click", () => {
-    const newOrder = e.target.closest(".new-command");
-
-    if(newOrder) {
-        confirmation.remove();
-        catContainer.style.display = "flex";
-        monPanier.style.display ="flex";
+            <div class="end-page-card">
+                <h2>Toute l’équipe vous remercie,</h2>
+                <h3>Et vous souhaite un bon appétit dans nos restaurants,</h3>
+                <h4>A bientôt !</h4>
+                <button class="new-command">Nouvelle commande</button>
+            </div>
+        </div>`;
+        return;
     }
 
-   })
-        
-
+    // étape 2 -> nouvelle commande
+    if (e.target.closest(".new-command")) {
+        confirmation.remove();
+        panier = [];
+        document.getElementById("panier-liste").innerHTML = "";
+        recalculerEtAfficherTotal();
+        menuContainer.innerHTML = "";
+        hero.style.display = "flex";   // retour à l'accueil
+    }
 });
 document.body.appendChild(confirmation);
 });
