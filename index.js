@@ -182,18 +182,25 @@ catCards.addEventListener("click", async (e) => {
 
         // création de la carte pour chaque produit
         produits.forEach(produit => {
-            const div = document.createElement("div");
-            div.classList.add("produit-card");
-            div.innerHTML = `
-                 <img src="${produit.image}" alt="${produit.nom}">
-                <div class = "produits-infos">
-                <h2>${produit.nom}</h2>
-                <p>${produit.prix} €</p>
-                </div>
-            `;
-            // on ajoute dans le HTML //
-            menuContainer.appendChild(div);
-        });
+    const div = document.createElement("div");
+    div.classList.add("produit-card");
+
+    // les données pour la fenêtre de détail
+    div.dataset.nom = produit.nom;
+    div.dataset.prix = produit.prix;
+    div.dataset.image = produit.image;
+
+    // le contenu visible de la carte (à garder !)
+    div.innerHTML = `
+        <img src="${produit.image}" alt="${produit.nom}">
+        <div class="produits-infos">
+            <h2>${produit.nom}</h2>
+            <p>${produit.prix} €</p>
+        </div>
+    `;
+
+    menuContainer.appendChild(div);
+});
 
         // en cas d'erreurs //
     } catch (error) {
@@ -202,6 +209,25 @@ catCards.addEventListener("click", async (e) => {
     }
 });
 
+function gabaritSimple(titre, nom, image) {
+    return `
+    <div class="menu-detail-content">
+        <img src="/assets/images/supprimer.png" class="close-btn" alt="Fermer">
+        <h2>${titre}</h2>
+        <div class="menu-detail-image">
+            <div class="menu-card">
+                <img src="${image}" alt="${nom}" class="small">
+                <h3>${nom}</h3>
+            </div>
+        </div>
+        <div class="compteur">
+            <button id="moins">-</button>
+            <span id="quantite">1</span>
+            <button id="plus">+</button>
+        </div>
+        <button class="panier">Ajouter au panier</button>
+    </div>`;
+}
 // pour afficher les différentes pages selon la catégorie //
 
 menuContainer.addEventListener("click", (e) => {
@@ -210,12 +236,12 @@ menuContainer.addEventListener("click", (e) => {
     if(!card) return;
 
     // la page qui va contenir les infos //
-    const nomProduit = card.querySelector("h2").textContent;
+    const { nom: nomProduit, image } = card.dataset;
     const detail = document.createElement("div");
     detail.classList.add("menu-detail");
    
 // logique if / else comme les images et le contenu vont varier selon les catégories //
-
+   
 // pour les menus // 
 
     if(categorieActive === "menus") {
@@ -240,24 +266,28 @@ menuContainer.addEventListener("click", (e) => {
 // pour les boisson, second if pour afficher les bonnes images au bons produits // 
 
     } else if (categorieActive === "boissons") {
-        let imageBoisson = "";
-        if (nomProduit === "Coca Cola") {
-            imageBoisson = "/assets/boissons/coca-cola.png"; 
-        } else if (nomProduit === "Coca Sans Sucres") {
-            imageBoisson = "/assets/boissons/coca-sans-sucres.png";
-        } else if (nomProduit === "Eau") {
-            imageBoisson = "/assets/boissons/eau.png"
-        } else if (nomProduit === "Fanta Orange") {
-            imageBoisson = "/assets/boissons/fanta.png"
-        } else if (nomProduit === "Ice Tea Pêche") {
-            imageBoisson = "/assets/boissons/ice-tea-peche.png"
-        } else if (nomProduit === "Ice Tea Citron") {
-            imageBoisson = "/assets/boissons/the-vert-citron-sans-sucres.png"
-        } else if (nomProduit === "Jus d'Orange") {
-            imageBoisson = "/assets/boissons/jus-orange.png"
-        } else {
-            imageBoisson = "/assets/boissons/jus-pomme-bio.png"
-        }
+    detail.innerHTML = `
+    <div class="menu-detail-content">
+        <img src="/assets/images/supprimer.png" class="close-btn">
+        <h2>Une petite soif ?</h2>
+        <p>Choisissez la taille de votre boisson pour votre ${nomProduit}, +0.50€ pour le format 50 Cl</p>
+        <div class="menu-detail-image">
+            <div class="menu-card">
+                <img src="${image}">
+                <h2>30Cl</h2>
+            </div>
+            <div class="menu-card">
+                <img src="${image}">
+                <h2>50Cl</h2>
+            </div>
+        </div>
+        <div class="compteur">
+            <button id="moins">-</button>
+            <span id="quantite">1</span>
+            <button id="plus">+</button>
+        </div>
+        <button class="panier">Ajouter au panier</button>
+    </div>`;
     // idem pour la page, + ajout d'un compteur pour augmenter nombre produit dans la commande, la logique sera partout sauf au menus //
         detail.innerHTML = `
         <div class="menu-detail-content">
@@ -266,11 +296,11 @@ menuContainer.addEventListener("click", (e) => {
             <p>Choisissez la taille de votre boisson pour votre ${nomProduit}, +0.50€ pour le format 50 Cl</p>
             <div class="menu-detail-image">
                 <div class="menu-card">
-                    <img src="${imageBoisson}">
+                    <img src="${image}">
                     <h2>30Cl</h2>
                 </div>
                 <div class="menu-card">
-                    <img src="${imageBoisson}">
+                    <img src="${image}">
                     <h2>50Cl</h2>
                 </div>
             </div>
@@ -282,253 +312,12 @@ menuContainer.addEventListener("click", (e) => {
              <button class="panier">Ajouter au panier</button>
         </div>`;
 // pour la page burger //
-    } else if (categorieActive === "burgers") {
-        let imageBurger = "";
-        if (nomProduit === "Le 280") {
-            imageBurger = "/assets/burgers/280.png";
-        } else if (nomProduit === "Big Tasty") {
-            imageBurger = "/assets/burgers/BIG_TASTY_1_VIANDE.png";
-        } else if (nomProduit === "Big Tasty Bacon") {
-            imageBurger = "/assets/burgers/BIG_TASTY_BACON_1_VIANDE.png"
-        } else if (nomProduit === "Big Mac") {
-            imageBurger = "/assets/burgers/BIGMAC.png"
-        } else if (nomProduit === "CBO") {
-            imageBurger = "/assets/burgers/CBO.png"
-        } else if (nomProduit === "MC Chicken") {
-            imageBurger = "/assets/burgers/MCCHICKEN.png"
-        } else if (nomProduit === "MC Crispy") {
-            imageBurger = "/assets/burgers/MCCRISPY.png"
-        } else if (nomProduit === "MC Fish") {
-            imageBurger = "/assets/burgers/MCFISH.png"
-        } else if (nomProduit === "Royal Bacon") {
-            imageBurger = "/assets/burgers/ROYALBACON.png"
-        } else if (nomProduit === "Royal Cheese") {
-            imageBurger = "/assets/burgers/ROYALCHEESE.png"
-        } else if (nomProduit === "Royal Deluxe") {
-            imageBurger = "/assets/burgers/ROYALDELUXE.png"
-        } else if (nomProduit === "Signature BBQ Beef 2 viandes") {
-            imageBurger = "/assets/burgers/SIGNATURE_BBQ_BEEF_(2_VIANDES).png"
-        } else {
-            imageBurger = "/assets/burgers/SIGNATURE_BEEF_BBQ_BURGER_(1_VIANDE).png"
-        }
-
-        detail.innerHTML = `
-        <div class="menu-detail-content">
-            <img src="/assets/images/supprimer.png" class="close-btn">
-            <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-            <div class="menu-detail-image">
-             <div class="menu-card">
-                <img src="${imageBurger}" alt="${nomProduit}" class="small">
-                <h3>${nomProduit}</h3>
-                </div>
-            </div>
-            <div class="compteur">
-                <button id="moins">-</button>
-                <span id="quantite">1</span>
-                <button id="plus">+</button>
-            </div>
-             <button class="panier">Ajouter au panier</button>
-        </div>`;
- // pour la page frites //       
-    } else if (categorieActive === "frites") {
-        let imageFrite = "";
-        if (nomProduit === "Petite Frite") {
-            imageFrite = "/assets/frites/PETITE_FRITE.png"
-        } else if (nomProduit === "Moyenne Frite") {
-            imageFrite = "/assets/frites/MOYENNE_FRITE.png"
-        } else if (nomProduit === "Grande Frite") {
-            imageFrite = "/assets/frites/GRANDE_FRITE.png"
-        } else if (nomProduit === "Potatoes") {
-            imageFrite = "/assets/frites/POTATOES.png"
-        } else {
-            imageFrite = "/assets/frites/GRANDE_POTATOES.png"
-        }
-
-        detail.innerHTML = `
-        <div class="menu-detail-content">
-            <img src="/assets/images/supprimer.png" class="close-btn">
-            <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-              <div class="menu-detail-image">
-                <div class="menu-card">
-                <img src="${imageFrite}" alt="${nomProduit}" class ="small">
-                <h3>${nomProduit}</h3>
-                </div>
-            </div>
-            <div class="compteur">
-                <button id="moins">-</button>
-                <span id="quantite">1</span>
-                <button id="plus">+</button>
-            </div>
-             <button class="panier">Ajouter au panier</button>
-        </div>`;
-// pour la page encas //
-    } else if (categorieActive === "encas") {
-       let imageEncas = "";
-        if(nomProduit === "Cheeseburger"){
-            imageEncas = "/assets/encas/cheeseburger.png"
-        } else if (nomProduit === "Croc MCdo") {
-            imageEncas = "/assets/encas/croc-mc-do.png"
-        } else if (nomProduit === "Nuggets x4") {
-            imageEncas = "/assets/encas/nuggets_4.png"
-        } else {
-            imageEncas = "/assets/encas/nuggets_20.png"
-        }
-
-        detail.innerHTML = `
-        <div class="menu-detail-content">
-            <img src="/assets/images/supprimer.png" class="close-btn">
-            <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-              <div class="menu-detail-image">
-                <div class="menu-card">
-                <img src="${imageEncas}" alt="${nomProduit}" class ="small">
-                <h3>${nomProduit}</h3>
-                </div>
-            </div>
-            <div class="compteur">
-                <button id="moins">-</button>
-                <span id="quantite">1</span>
-                <button id="plus">+</button>
-            </div>
-             <button class="panier">Ajouter au panier</button>
-        </div>`;
-// pour la page wraps //
-
-    } else if (categorieActive === "wraps") {
-        let imageWrap = "";
-      if (nomProduit === "MC Wrap chevre") {
-        imageWrap = "/assets/wraps/mcwrap-chevre.png"
-      } else if (nomProduit === "MC Wrap Poulet Bacon") {
-        imageWrap = "/assets/wraps/MCWRAP-POULET-BACON.png"
-      } else if (nomProduit === "Ptit Wrap Chevre"){
-        imageWrap = "/assets/wraps/PTIT_WRAP_CHEVRE.png"
-      } else {
-        imageWrap = "/assets/wraps/PTIT_WRAP_RANCH.png"
-      }
-
-      detail.innerHTML = `
-        <div class="menu-detail-content">
-            <img src="/assets/images/supprimer.png" class="close-btn">
-            <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-              <div class="menu-detail-image">
-                <div class="menu-card">
-                <img src="${imageWrap}" alt="${nomProduit}" class="small">
-                <h3>${nomProduit}</h3>
-                </div>
-            </div>
-            <div class="compteur">
-                <button id="moins">-</button>
-                <span id="quantite">1</span>
-                <button id="plus">+</button>
-            </div>
-             <button class="panier">Ajouter au panier</button>
-        </div>`;
-// pour la page salades //
-
-    } else if (categorieActive === "salades") {
-        let imageSalade ="";
-        if (nomProduit === "Petite Salade") {
-            imageSalade = "/assets/salades/PETITE-SALADE.png"
-        } else if (nomProduit === "Cesar Classic") {
-            imageSalade = "/assets/salades/SALADE_CLASSIC_CAESAR.png"
-        } else {
-            imageSalade = "/assets/salades/SALADE_ITALIAN_MOZZA.png"
-        }
-
-        detail.innerHTML = `
-        <div class="menu-detail-content">
-            <img src="/assets/images/supprimer.png" class="close-btn">
-            <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-              <div class="menu-detail-image">
-                <div class="menu-card">
-                <img src="${imageSalade}" alt="${nomProduit}" class="small">
-                <h3>${nomProduit}</h3>
-                </div>
-            </div>
-            <div class="compteur">
-                <button id="moins">-</button>
-                <span id="quantite">1</span>
-                <button id="plus">+</button>
-            </div>
-             <button class="panier">Ajouter au panier</button>
-        </div>`;
-    // pour la page desserts //
-
-    } else if (categorieActive === "desserts") {
-        let imageDessert = "";
-        if(nomProduit === "Brownie") {
-            imageDessert = "/assets/desserts/brownies.png"
-        } else if (nomProduit === "Cheesecake chocolat M&M'S") {
-            imageDessert ="/assets/desserts/cheesecake_choconuts_M&M_s.png"
-        } else if (nomProduit === "Cheesecake Fraise") {
-            imageDessert = "/assets/desserts/cheesecake_fraise.png"
-        } else if (nomProduit === "Cookie") {
-            imageDessert = "/assets/desserts/cookie.png"
-        } else if (nomProduit === "Donut") {
-            imageDessert = "/assets/desserts/doghnut.png"
-        } else if (nomProduit === "Macarons") {
-            imageDessert = "/assets/desserts/macarons.png"
-        } else if (nomProduit === "MC Fleury") {
-            imageDessert = "/assets/desserts/MCFleury.png"
-        } else if (nomProduit === "Muffin") {
-            imageDessert = "/assets/desserts/muffin.png"
-        } else {
-            imageDessert = "/assets/desserts/sunday.png"
-        }
-
-        detail.innerHTML = `
-        <div class="menu-detail-content">
-            <img src="/assets/images/supprimer.png" class="close-btn">
-            <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-              <div class="menu-detail-image">
-                <div class="menu-card">
-                <img src="${imageDessert}" alt="${nomProduit}" class="small">
-                <h3>${nomProduit}</h3>
-                </div>
-            </div>
-            <div class="compteur">
-                <button id="moins">-</button>
-                <span id="quantite">1</span>
-                <button id="plus">+</button>
-            </div>
-            <button class="panier">Ajouter au panier</button>
-        </div>`;
-
-        // on termine avec les sauces //
-    } else {
-        let imageSauce = "";
-        if (nomProduit === "Classic Barbecue") {
-            imageSauce = "/assets/sauces/classic-barbecue.png"
-        } else if (nomProduit === "Classic Moutarde") {
-            imageSauce = "/assets/sauces/classic-moutarde.png"   
-        } else if (nomProduit === "Creamy Deluxe") {
-            imageSauce = "/assets/sauces/cremy-deluxe.png"
-        } else if (nomProduit === "Ketchup") {
-            imageSauce = "/assets/sauces/ketchup.png"
-        } else if (nomProduit === "Chinoise") {
-            imageSauce = "/assets/sauces/sauce-chinoise.png"
-        } else if (nomProduit === "Curry") {
-            imageSauce = "/assets/sauces/sauce-curry.png"
-        } else {
-            imageSauce = "/assets/sauces/sauce-pommes-frite.png"
-        }
-
-        detail.innerHTML = `
-        <div class="menu-detail-content">
-            <img src="/assets/images/supprimer.png" class="close-btn">
-            <h2>Faites votre choix parmi nos ${categorieActive}</h2>
-              <div class="menu-detail-image">
-                <div class="menu-card">
-                <img src="${imageSauce}" alt="${nomProduit}" class="small">
-                <h3>${nomProduit}</h3>
-                </div>
-            </div>
-            <div class="compteur">
-                <button id="moins">-</button>
-                <span id="quantite">1</span>
-                <button id="plus">+</button>
-            </div>
-             <button class="panier">Ajouter au panier</button>
-        </div>`;
+    }   else {
+        detail.innerHTML = gabaritSimple(
+            `Faites votre choix parmi nos ${categorieActive}`,
+            nomProduit,
+            image
+        );
     }
 
 // la croix permet de fermer la page, logique identique pour toutes les pages des produits de catégories //
@@ -636,8 +425,8 @@ menuContainer.addEventListener("click", (e) => {
 
     let quantite = 1;
     // on récupère le produit //
-    const prixTexte = card.querySelector("p")?.textContent.replace(" €", "");
-    const prixProduit = prixTexte ? parseFloat(prixTexte) : 0;
+    const prixProduit = parseFloat(card.dataset.prix);
+    
 
     // logique pour diminuer la quantité de produits //
     const btnMoins = document.getElementById("moins");
