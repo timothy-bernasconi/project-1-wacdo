@@ -24,6 +24,7 @@ let panier = []; // le panier vide
 let friteSelectionnee = ""; 
 let commandOrder = 0;
 let commandOrderSecond = 0; 
+let modeCommande = "";
 
 
 // Pour charger les catégories //
@@ -103,10 +104,17 @@ function tableNumber3() {
 // la logique du carousel, au clic on avance ou on recule selon le bt1 ou btn2 //
 // création d'un numéro de commande via le meme bouton //
 
-btn1.addEventListener("click", chargerCategories);
-btn1.addEventListener("click", commandNumber);
-btn2.addEventListener("click", chargerCategories);
-btn2.addEventListener("click", commandNumberSecond);
+btn1.addEventListener("click", () => {
+    modeCommande = "place";
+    commandNumber();
+    chargerCategories();
+});
+
+btn2.addEventListener("click", () => {
+    modeCommande = "emporter";
+    commandNumberSecond();
+    chargerCategories();
+});
 
 // avancer
 
@@ -556,21 +564,34 @@ payer.addEventListener("click", () => {
 
 // contenu de la page //
 
+  if (modeCommande === "emporter") {
+    const numero = numCommande.textContent.replace("Commande n°", "");
     confirmation.innerHTML = `
         <div class="end-page">
-        <div class ="end-page-card">
-        <h2>Pour être servis à table,</h2>
-        <h3> Récupérez un chevalet et indiquez ici le numéro inscrit dessus </h3>
-        <div class="span-number">
-        <span class="number-card">${numeroTable}</span>
-        <span class="number-card">${numeroTable2}</span>
-        <span class="number-card">${numeroTable3}</span>
-        </div>
-        <button class="closing-page"> Enregister le numéro </button>
-        </div>
-       
-        </div>
-    `;
+            <div class="end-page-card">
+                <h2>Votre commande est validée,</h2>
+                <h3>Présentez-vous au comptoir avec le numéro</h3>
+                <div class="span-number">
+                    <span class="number-card">${numero}</span>
+                </div>
+                <button class="new-command">Nouvelle commande</button>
+            </div>
+        </div>`;
+} else {
+    confirmation.innerHTML = `
+        <div class="end-page">
+            <div class="end-page-card">
+                <h2>Pour être servis à table,</h2>
+                <h3>Récupérez un chevalet et indiquez ici le numéro inscrit dessus</h3>
+                <div class="span-number">
+                    <span class="number-card">${numeroTable}</span>
+                    <span class="number-card">${numeroTable2}</span>
+                    <span class="number-card">${numeroTable3}</span>
+                </div>
+                <button class="closing-page">Enregistrer le numéro</button>
+            </div>
+        </div>`;
+}
 
     confirmation.addEventListener("click", (e) => {
     // étape 1 -> page de remerciement
