@@ -779,39 +779,30 @@ payer.addEventListener("click", () => {
         </div>
     `;
 
-    // au clic sur closing-page
-
     confirmation.addEventListener("click", (e) => {
-    const buttonOut = e.target.closest(".closing-page");
-
-    if(buttonOut) {
+    // étape 1 -> page de remerciement
+    if (e.target.closest(".closing-page")) {
         confirmation.innerHTML = `
         <div class="end-page">
-        <div class ="end-page-card">
-        <h2>Toute l’équipe vous remercie,</h2>
-        <h3> Et vous souhaite un bon appétit dans nos restaurants, <h3>
-        <h4> A bientôt ! </h4>
-        <button class="new-command"> Nouvelle commande </button>
-        </div>
-       
-        </div>
-    `;
-   }
-
-   // la dernière page //
-
-   confirmation.addEventListener("click", () => {
-    const newOrder = e.target.closest(".new-command");
-
-    if(newOrder) {
-        confirmation.remove();
-        catContainer.style.display = "flex";
-        monPanier.style.display ="flex";
+            <div class="end-page-card">
+                <h2>Toute l’équipe vous remercie,</h2>
+                <h3>Et vous souhaite un bon appétit dans nos restaurants,</h3>
+                <h4>A bientôt !</h4>
+                <button class="new-command">Nouvelle commande</button>
+            </div>
+        </div>`;
+        return;
     }
 
-   })
-        
-
+    // étape 2 -> nouvelle commande
+    if (e.target.closest(".new-command")) {
+        confirmation.remove();
+        panier = [];
+        document.getElementById("panier-liste").innerHTML = "";
+        recalculerEtAfficherTotal();
+        menuContainer.innerHTML = "";
+        hero.style.display = "flex";   // retour à l'accueil
+    }
 });
 document.body.appendChild(confirmation);
 });
